@@ -6,6 +6,7 @@ var cityname;
 var apikey = "";
 var res;
 var var3;
+
 app.get('/', function (req, res)
 {
 		if (req.query.criteria == 'CityName')
@@ -54,12 +55,24 @@ app.get('/', function (req, res)
 	console.log(queryString);
 	needle.request('get', url, data, function(error, response) {
 	  if (!error && response.statusCode == 200)
+	  {
 		//console.log(response.body);
-			var img = '<img src="http://openweathermap.org/img/w/'+response.body.weather[0].icon+'.png">'
-			res.send('<p> Weather Condition for <b>'+ response.body.name+'</b> </p><p>Current Longitude is <b>' + response.body.coord.lon + '</b> </p><p>Current Latitude is <b>' + response.body.coord.lat + '</b></p><p>' + img + '</p><p>Current condition is <b>' + response.body.weather[0].main + ' </b></p><p>Temperature in ' + req.query.unittest + ' is : </p><p>Current temperature is <b>' + response.body.main.temp  + '</b></p><p>Min temperature is <b>' + response.body.main.temp_min + '</p><p>Max temperature is <b>' + response.body.main.temp_max)
+		if(typeof response.body.weather != 'undefined')
+		{	var img = '<img src="http://openweathermap.org/img/w/'+response.body.weather[0].icon+'.png">'
+			res.send('<p> Weather Condition for <b>'+ response.body.name+'</b> </p><p>Current Longitude is <b>' + response.body.coord.lon + '</b> </p><p>Current Latitude is <b>' + response.body.coord.lat + '</b></p><p>' + img + '</p><p>Current condition is <b>' + response.body.weather[0].main + ' </b></p><p>Temperature in ' + req.query.unittest + ' is : </p><p>Current temperature is <b>' + response.body.main.temp  + '</b></p><p>Min temperature is <b>' + response.body.main.temp_min + '</b></p><p>Max temperature is <b>' + response.body.main.temp_max + '</b>')
+		}
+		else
+		{
+			res.send("Error, no data found!");
+		}
+	  }
+
+		  
 			
 });
 });
+
+
 	
 var server = app.listen(3000, function () {
 
